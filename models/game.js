@@ -17,6 +17,7 @@ Game.prototype.start = function() {
       this.clear();
       this.draw();
       this.move();
+      
     }.bind(this),
     FPS
   );
@@ -28,9 +29,9 @@ Game.prototype.draw = function() {
 };
 
 Game.prototype.move = function() {
-  //this.bg.move();
-  this.ship.move();
+  this.ship.move()
 };
+
 
 Game.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
