@@ -7,8 +7,6 @@ function Game(canvas) {
   this.ship = new Ship(this.ctx);
 
 
-
-  this.drawCount = 0;
 }
 
 Game.prototype.start = function() {

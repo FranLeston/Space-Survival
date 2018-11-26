@@ -11,7 +11,7 @@ function Background(ctx) {
   this.h = this.ctx.canvas.height;
 
   this.img = new Image();
-  this.img.src = "http://www.psdgraphics.com/file/night-sky-stars.jpg";
+  this.img.src = "https://i.ytimg.com/vi/QnrzS2xEoWg/maxresdefault.jpg";
 }
 
 Background.prototype.draw = function() {
