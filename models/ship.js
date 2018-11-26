@@ -29,14 +29,15 @@ Ship.prototype.draw = function() {
 
 Ship.prototype.move = function() {
   if (this.isThrusting) {
-    this.vy += SHIP_THRUST / FPS;
-    this.y -= this.vy / FPS ;
-    
+    this.vy += SHIP_THRUST;
 
-    
+    this.vy -= (this.vy * FRICTION) / FPS;
+
+    this.y -= this.vy / FPS;
   } else {
-    
-  
+    this.vy -= (this.vy * FRICTION) / FPS;
+
+    this.y -= this.vy / FPS;
   }
 };
 
@@ -48,7 +49,6 @@ Ship.prototype.setListeners = function() {
 Ship.prototype.onKeyDown = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
-      
       this.a = this.a + 5;
       break;
     case KEY_LEFT:
@@ -56,7 +56,8 @@ Ship.prototype.onKeyDown = function(e) {
       break;
 
     case KEY_UP:
-    this.isThrusting = true;
+      this.isThrusting = true;
+
       break;
   }
 };
@@ -67,11 +68,6 @@ Ship.prototype.onKeyUp = function(e) {
     case KEY_LEFT:
       break;
     case KEY_UP:
-    this.isThrusting = false;
-    
-    
-   
-  
-      
+      this.isThrusting = false;
   }
 };
