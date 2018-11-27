@@ -12,9 +12,11 @@ function Ship(ctx) {
 
   this.w = 65;
   this.h = 70;
-
+  this.r = 0;
   this.a = (3 * Math.PI) / 2;
+  this.acc = 0.3;
   this.isThrusting = false;
+  this.isTurning = false;
 
   this.setListeners();
 }
@@ -29,26 +31,21 @@ Ship.prototype.draw = function() {
 
 Ship.prototype.move = function() {
   if (this.isThrusting) {
-    this.vx += SHIP_THRUST
-    this.vy += SHIP_THRUST
-    
-    this.vx -= this.vy * FRICTION / FPS;
-    this.vy -= this.vy * FRICTION / FPS;
-    
-    
-    this.x += (this.vx * Math.cos(this.a) / FPS);
-    this.y += (this.vy * Math.sin(this.a) / FPS);
+    this.vx += SHIP_THRUST;
+    this.vy += SHIP_THRUST;
 
+    this.vx -= (this.vx * FRICTION) / FPS;
+  this.vy -= (this.vy * FRICTION) / FPS;
 
-  } else {
-    this.vx -= this.vy * FRICTION / FPS;
-    this.vy -= this.vy * FRICTION / FPS;
-    
-    
-    this.x += (this.vx * Math.cos(this.a) / FPS);
-    this.y += (this.vy * Math.sin(this.a) / FPS);
+    this.x += (this.vx * Math.cos(this.a)) / FPS;
+    this.y += (this.vy * Math.sin(this.a)) / FPS;
+
   }
+  this.vx -= (this.vx * FRICTION) / FPS;
+  this.vy -= (this.vy * FRICTION) / FPS;
 
+  this.x += (this.vx * Math.cos(this.a)) / FPS;
+  this.y += (this.vy * Math.sin(this.a)) / FPS;
 };
 
 Ship.prototype.setListeners = function() {
@@ -59,10 +56,12 @@ Ship.prototype.setListeners = function() {
 Ship.prototype.onKeyDown = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
-      this.a += Math.PI / 32;
+      this.isTurning = true;
+      this.a += this.r + Math.PI / 60;
       break;
     case KEY_LEFT:
-      this.a -= Math.PI / 32;
+      this.isTurning = true;
+      this.a -= this.r + Math.PI / 60;
       break;
 
     case KEY_UP:
@@ -74,10 +73,11 @@ Ship.prototype.onKeyDown = function(e) {
 Ship.prototype.onKeyUp = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
-
+      this.isTurning = false;
     case KEY_LEFT:
-
+      this.isTurning = false;
     case KEY_UP:
       this.isThrusting = false;
+      
   }
 };
