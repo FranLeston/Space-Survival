@@ -5,7 +5,7 @@ function Game(canvas) {
 
   this.bg = new Background(this.ctx);
   this.ship = new Ship(this.ctx);
-
+  
 
 }
 
@@ -24,10 +24,12 @@ Game.prototype.start = function() {
 Game.prototype.draw = function() {
   this.bg.draw();
   this.ship.draw();
+  //this.bullets.draw();
 };
 
 Game.prototype.move = function() {
-  this.ship.move()
+  this.ship.move();
+  
 };
 
 
