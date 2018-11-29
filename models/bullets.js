@@ -3,8 +3,8 @@ function Bullet(ctx, x, y, a) {
 
   this.x = x;
   this.y = y;
-  this.vx = 8;
-  this.vy = 8;
+  this.vx = 10;
+  this.vy = 10;
   this.img = new Image();
   this.img.src =
     "https://chrismalnu.files.wordpress.com/2016/02/clash2.png?w=680";
@@ -26,6 +26,6 @@ Bullet.prototype.draw = function() {
 Bullet.prototype.move = function() {
    
 
-    this.x += (this.vx * Math.cos(this.a)) ;
-    this.y += (this.vy * Math.sin(this.a)) ;
+    this.x += (this.vx * Math.cos(this.a))  ;
+    this.y += (this.vy * Math.sin(this.a))  ;
 };

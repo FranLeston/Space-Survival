@@ -49,15 +49,17 @@ Ship.prototype.move = function() {
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
   } else if (this.isTurningLeft){
-    this.a -= Math.PI / 5 / FPS;
-     
+    this.a -= Math.PI / 48;
+    this.vx -= (this.vx * FRICTION) / FPS;
+    this.vy -= (this.vy * FRICTION) / FPS;
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
 
   }else if (this.isTurningRight){
-    this.a += Math.PI / 5 /FPS;
-    
+    this.a += Math.PI / 48;
+    this.vx -= (this.vx * FRICTION) / FPS;
+  this.vy -= (this.vy * FRICTION) / FPS;
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
