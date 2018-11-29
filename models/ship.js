@@ -12,11 +12,13 @@ function Ship(ctx) {
 
   this.w = 65;
   this.h = 70;
-  //this.r = 0;
+  this.heading = (3 * Math.PI) / 2;
   this.a = (3 * Math.PI) / 2;
-  this.isThrusting = false;
-  this.isTurning = false;
+  
 
+  this.isThrusting = false;
+  this.isTurningLeft = false;
+  this.isTurningRight = false;
   this.setListeners();
 
   this.bullets = [];
@@ -26,15 +28,15 @@ Ship.prototype.draw = function() {
   this.bullets.forEach(function(bullet) {
     bullet.draw();
   });
- 
- 
+
+
+
+
   this.ctx.save();
   this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
   this.ctx.rotate(this.a - (3 * Math.PI) / 2);
   this.ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
   this.ctx.restore();
-
-
 };
 
 Ship.prototype.move = function() {
@@ -42,32 +44,63 @@ Ship.prototype.move = function() {
     this.vx += SHIP_THRUST;
     this.vy += SHIP_THRUST;
 
-    this.vx -= (this.vx * FRICTION) / FPS;
-    this.vy -= (this.vy * FRICTION) / FPS;
+    
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
-  }
+  } else if (this.isTurningLeft){
+    this.a -= Math.PI / 5 / FPS;
+     
+
+    this.x += (this.vx * Math.cos(this.a)) / FPS;
+    this.y += (this.vy * Math.sin(this.a)) / FPS;
+
+  }else if (this.isTurningRight){
+    this.a += Math.PI / 5 /FPS;
+    
+
+    this.x += (this.vx * Math.cos(this.a)) / FPS;
+    this.y += (this.vy * Math.sin(this.a)) / FPS;
+
+  } 
   this.vx -= (this.vx * FRICTION) / FPS;
   this.vy -= (this.vy * FRICTION) / FPS;
 
   this.x += (this.vx * Math.cos(this.a)) / FPS;
   this.y += (this.vy * Math.sin(this.a)) / FPS;
+  
+  //handle the ships edge of screen
+  if (this.x < 0) {
+    this.vx = -this.vx;
+    this.vy = -this.vy;
+  } else if (this.x > this.ctx.canvas.width - this.w) {
+    this.vx = -this.vx;
+    this.vy = -this.vy;
+  }
+
+  if (this.y > this.ctx.canvas.height - this.h) {
+    this.vx = -this.vx;
+    this.vy = -this.vy;
+  } else if (this.y < 0) {
+    this.vx = -this.vx;
+    this.vy = -this.vy;
+  }
 
   this.bullets.forEach(function(bullet) {
     bullet.move();
-  }
-  )};
+  });
+};
 
 Ship.prototype.addbullets = function() {
-
-  var bullet = new Bullet(this.ctx, this.x + this.w / 2, this.y + (this.h  / 2) - 15, this.a);
+  var bullet = new Bullet(
+    this.ctx,
+    this.x + this.w / 2,
+    this.y + this.h / 2 - 15,
+    this.a
+  );
   this.bullets.push(bullet);
 
-
-// Filter bullets use bind 
-
-
+  // Filter bullets use bind
 };
 
 Ship.prototype.setListeners = function() {
@@ -78,14 +111,13 @@ Ship.prototype.setListeners = function() {
 Ship.prototype.onKeyDown = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
-      this.isTurning = true;
-      this.a += Math.PI / 32;
-      this.r = this.a;
+      this.isTurningRight = true;
+      
       break;
     case KEY_LEFT:
-      this.isTurning = true;
-      this.a -= Math.PI / 32;
-      this.r = this.a;
+      this.isTurningLeft = true;
+      
+      
       break;
 
     case KEY_UP:
@@ -101,15 +133,16 @@ Ship.prototype.onKeyDown = function(e) {
 Ship.prototype.onKeyUp = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
-      this.isTurning = false;
+      this.isTurningRight = false;
       break;
     case KEY_LEFT:
-      this.isTurning = false;
+      this.isTurningLeft = false;
+      break;
     case KEY_UP:
       this.isThrusting = false;
+      
+      break;
     case KEY_SPACE:
+      break;
   }
 };
-
-
-// flame https://www.spriters-resource.com/resources/sheet_icons/62/65509.png
