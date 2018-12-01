@@ -1,6 +1,8 @@
 function Bullet(ctx, x, y, a) {
   this.ctx = ctx;
 
+
+  
   this.x = x;
   this.y = y;
   this.vx = 10;

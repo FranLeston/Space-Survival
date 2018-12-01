@@ -3,7 +3,7 @@ function Background(ctx) {
  
   this.stars = [];
 
-for (var i = 0; i < 1000; i++) {
+for (var i = 0; i < 500; i++) {
     this.stars[i] = {
       x: Math.random() * this.ctx.canvas.width,
       y: Math.random() * this.ctx.canvas.height,

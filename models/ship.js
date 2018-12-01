@@ -2,7 +2,7 @@ function Ship(ctx) {
   this.ctx = ctx;
 
   this.x = ctx.canvas.width / 2;
-  this.y = ctx.canvas.height - 80;
+  this.y = ctx.canvas.height / 2;
 
   this.vx = 0;
   this.vy = 0;
@@ -14,7 +14,6 @@ function Ship(ctx) {
   this.h = 70;
   this.heading = (3 * Math.PI) / 2;
   this.a = (3 * Math.PI) / 2;
-  
 
   this.isThrusting = false;
   this.isTurningLeft = false;
@@ -29,9 +28,6 @@ Ship.prototype.draw = function() {
     bullet.draw();
   });
 
-
-
-
   this.ctx.save();
   this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
   this.ctx.rotate(this.a - (3 * Math.PI) / 2);
@@ -44,48 +40,40 @@ Ship.prototype.move = function() {
     this.vx += SHIP_THRUST;
     this.vy += SHIP_THRUST;
 
-    
-
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
-  } else if (this.isTurningLeft){
+  } else if (this.isTurningLeft) {
     this.a -= Math.PI / 48;
     this.vx -= (this.vx * FRICTION) / FPS;
     this.vy -= (this.vy * FRICTION) / FPS;
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
-
-  }else if (this.isTurningRight){
+  } else if (this.isTurningRight) {
     this.a += Math.PI / 48;
     this.vx -= (this.vx * FRICTION) / FPS;
-  this.vy -= (this.vy * FRICTION) / FPS;
+    this.vy -= (this.vy * FRICTION) / FPS;
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
-
-  } 
+  }
   this.vx -= (this.vx * FRICTION) / FPS;
   this.vy -= (this.vy * FRICTION) / FPS;
 
   this.x += (this.vx * Math.cos(this.a)) / FPS;
   this.y += (this.vy * Math.sin(this.a)) / FPS;
-  
+
   //handle the ships edge of screen
-  if (this.x < 0) {
-    this.vx = -this.vx;
-    this.vy = -this.vy;
-  } else if (this.x > this.ctx.canvas.width - this.w) {
-    this.vx = -this.vx;
-    this.vy = -this.vy;
+  if (this.x < 0 - this.w) {
+    this.x = this.ctx.canvas.width;
+  } else if (this.x > this.ctx.canvas.width) {
+    this.x = 0 - this.w;
   }
 
-  if (this.y > this.ctx.canvas.height - this.h) {
-    this.vx = -this.vx;
-    this.vy = -this.vy;
-  } else if (this.y < 0) {
-    this.vx = -this.vx;
-    this.vy = -this.vy;
+  if (this.y < 0 - this.h) {
+    this.y = this.ctx.canvas.height;
+  } else if (this.y > this.ctx.canvas.height) {
+    this.y = 0 - this.h;
   }
 
   this.bullets.forEach(function(bullet) {
@@ -101,8 +89,19 @@ Ship.prototype.addbullets = function() {
     this.a
   );
   this.bullets.push(bullet);
+  console.log(this.bullets.length);
+  // Filter bullets
 
-  // Filter bullets use bind
+  this.bullets = this.bullets.filter(
+    function(bullet) {
+      return (
+        bullet.x <= this.ctx.canvas.width &&
+        bullet.x > 0 &&
+        bullet.y > 0 &&
+        bullet.y <= this.ctx.canvas.height
+      );
+    }.bind(this)
+  );
 };
 
 Ship.prototype.setListeners = function() {
@@ -114,12 +113,11 @@ Ship.prototype.onKeyDown = function(e) {
   switch (e.keyCode) {
     case KEY_RIGHT:
       this.isTurningRight = true;
-      
+
       break;
     case KEY_LEFT:
       this.isTurningLeft = true;
-      
-      
+
       break;
 
     case KEY_UP:
@@ -128,7 +126,11 @@ Ship.prototype.onKeyDown = function(e) {
       break;
 
     case KEY_SPACE:
-      this.addbullets();
+      if (!e.repeat) {
+        this.addbullets();
+        return false;
+      }
+      return true;
       break;
   }
 };
@@ -142,7 +144,7 @@ Ship.prototype.onKeyUp = function(e) {
       break;
     case KEY_UP:
       this.isThrusting = false;
-      
+
       break;
     case KEY_SPACE:
       break;
