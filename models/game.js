@@ -28,7 +28,7 @@ Game.prototype.addArmy = function(enemy) {
 }
 
 Game.prototype.firstLevel = function() {
-  for(var i = -1; ++i < 5;) {
+  for(var i = -1; ++i < 6;) {
     this.addArmy(new Enemy(this.ctx))
   }
 }
@@ -47,7 +47,9 @@ Game.prototype.move = function() {
   this.ship.move();
   // this.enemy.move();
   this.army.forEach(function(enemy) {
+    
     enemy.move()
+
   })
   
 };
@@ -56,3 +58,5 @@ Game.prototype.move = function() {
 Game.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 };
+
+

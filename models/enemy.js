@@ -8,12 +8,12 @@ function Enemy(ctx) {
   this.vy = getNonZeroRandomNumber();
   this.vx = getNonZeroRandomNumber();
 
-  this.w = 80;
-  this.h = 80;
+  this.w = Math.floor(Math.random() * 80) + 20;
+  this.h = this.w
 
-  this.a = (3 * Math.PI) / 2;
+  this.a = (Math.floor(Math.random() * (3 * Math.PI) / 2) - 20)
 
-  this.enemies = [];
+  
 }
 
 // Enemy.prototype.addEnemies = function (){
@@ -31,6 +31,13 @@ function getNonZeroRandomNumber() {
   return random;
 }
 
+/*
+function distanceBetweenPoints(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+
+}
+*/
+
 Enemy.prototype.draw = function() {
     
   
@@ -45,6 +52,8 @@ Enemy.prototype.move = function() {
   this.a += Math.PI / 180;
   this.x += this.vx / FPS;
   this.y += this.vy / FPS;
+
+
 
   if (this.x < 0 - this.w) {
     this.x = this.ctx.canvas.width;
