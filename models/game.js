@@ -5,7 +5,6 @@ function Game(canvas) {
 
   this.bg = new Background(this.ctx);
   this.ship = new Ship(this.ctx);
-  // this.enemy = new Enemy(this.ctx);
   this.army = []
 
 }
@@ -17,7 +16,7 @@ Game.prototype.start = function() {
       this.clear();
       this.draw();
       this.move();
-      
+      this.checkAsteroidsCollisions()
     }.bind(this),
     FPS
   );
@@ -33,10 +32,17 @@ Game.prototype.firstLevel = function() {
   }
 }
 
+Game.prototype.checkAsteroidsCollisions = function() {
+  this.army = this.army.filter(function(asteroid) {
+    // return !asteroid.isCollision(bullet)
+    return !this.ship.checkBulletCollision(asteroid)
+  }.bind(this))
+}
+
+
 Game.prototype.draw = function() {
   this.bg.draw();
   this.ship.draw();
-  // this.enemy.draw();
   this.army.forEach(function(enemy) {
     enemy.draw()
   })
@@ -45,14 +51,16 @@ Game.prototype.draw = function() {
 
 Game.prototype.move = function() {
   this.ship.move();
-  // this.enemy.move();
   this.army.forEach(function(enemy) {
-    
     enemy.move()
-
   })
   
 };
+
+Game.prototype.isGameOver = function() {
+  // Comprobar si la nave se choca y acabar el juego. No hace falta quitar el asteroide, pero sí quitar la nave
+  // return !asteroid.isCollision(this.ship)
+}
 
 
 Game.prototype.clear = function() {

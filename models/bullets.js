@@ -1,8 +1,5 @@
 function Bullet(ctx, x, y, a) {
   this.ctx = ctx;
-
-
-  
   this.x = x;
   this.y = y;
   this.vx = 10;
@@ -31,3 +28,12 @@ Bullet.prototype.move = function() {
     this.x += (this.vx * Math.cos(this.a))  ;
     this.y += (this.vy * Math.sin(this.a))  ;
 };
+
+Bullet.prototype.isCollision = function(obj) {
+  if(obj) {
+    return (this.x < obj.x + obj.w &&
+      this.x + this.w > obj.x &&
+      this.y < obj.y + obj.h &&
+      this.h + this.y > obj.y)
+  }
+}

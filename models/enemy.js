@@ -8,7 +8,7 @@ function Enemy(ctx) {
   this.vy = getNonZeroRandomNumber();
   this.vx = getNonZeroRandomNumber();
 
-  this.w = Math.floor(Math.random() * 80) + 20;
+  this.w = Math.floor(Math.random() * 80) + 30;
   this.h = this.w
 
   this.a = (Math.floor(Math.random() * (3 * Math.PI) / 2) - 20)
@@ -16,14 +16,12 @@ function Enemy(ctx) {
   
 }
 
-// Enemy.prototype.addEnemies = function (){
-// for (i = 0; i < 5 ; i ++) {
-//     var enemy = new Enemy();
-//     this.enemies.push(enemy);
-//     console.log(this.enemies.length);
-// }
-// this.enemy.draw();
-// }
+Enemy.prototype.isCollision = function(obj) {
+  return (this.x < obj.x + obj.w &&
+    this.x + this.w > obj.x &&
+    this.y < obj.y + obj.h &&
+    this.h + this.y > obj.y)
+}
 
 function getNonZeroRandomNumber() {
   var random = Math.floor(Math.random() * 101) - 50;
