@@ -8,20 +8,22 @@ function Enemy(ctx) {
   this.vy = getNonZeroRandomNumber();
   this.vx = getNonZeroRandomNumber();
 
-  this.w = Math.floor(Math.random() * 80) + 30;
-  this.h = this.w
+  this.w = Math.floor(Math.random() * 80) + 35;
+  this.h = this.w;
 
-  this.a = (Math.floor(Math.random() * (3 * Math.PI) / 2) - 20)
+  this.a = Math.floor((Math.random() * (3 * Math.PI)) / 2) - 20;
 
-  
+  this.isAlive = true;
 }
 
-Enemy.prototype.isCollision = function(obj) {
-  return (this.x < obj.x + obj.w &&
+Enemy.prototype.collideWith = function(obj) {
+  return (
+    this.x < obj.x + obj.w   &&
     this.x + this.w > obj.x &&
-    this.y < obj.y + obj.h &&
-    this.h + this.y > obj.y)
-}
+    this.y < obj.y + obj.h  &&
+    this.h  + this.y > obj.y
+  );
+};
 
 function getNonZeroRandomNumber() {
   var random = Math.floor(Math.random() * 101) - 50;
@@ -37,21 +39,19 @@ function distanceBetweenPoints(x1, y1, x2, y2) {
 */
 
 Enemy.prototype.draw = function() {
-    
-  
-this.ctx.save();
-  this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
-  this.ctx.rotate(this.a);
-  this.ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
-  this.ctx.restore();
+  if (this.isAlive) {
+    this.ctx.save();
+    this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
+    this.ctx.rotate(this.a);
+    this.ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
+    this.ctx.restore();
+  }
 };
 
 Enemy.prototype.move = function() {
-  this.a += Math.PI / 180;
+  this.a += Math.PI / 64;
   this.x += this.vx / FPS;
   this.y += this.vy / FPS;
-
-
 
   if (this.x < 0 - this.w) {
     this.x = this.ctx.canvas.width;
@@ -64,6 +64,4 @@ Enemy.prototype.move = function() {
   } else if (this.y > this.ctx.canvas.height) {
     this.y = 0 - this.h;
   }
-
-
 };

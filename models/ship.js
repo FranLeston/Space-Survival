@@ -24,23 +24,10 @@ function Ship(ctx) {
   this.bullets = [];
 }
 
-// Ship.prototype.checkShipCollisions = function() {
-//   this.bullets = this.bullets.filter(function(asteroid) {
-//     return !asteroid.isCollision(this.bullets)
-//   }.bind(this))
-// }
-
-// Ship.prototype.isCollision = function(obj) {
-//   return (this.x < obj.x + obj.w &&
-//     this.x + this.w > obj.x &&
-//     this.y < obj.y + obj.h &&
-//     this.h + this.y > obj.y)
-// }
-
 Ship.prototype.draw = function() {
   this.bullets = this.bullets.filter(function(bullet) {
-    return !bullet.isCollision()
-  })
+    return !bullet.isCollision();
+  });
   this.bullets.forEach(function(bullet) {
     bullet.draw();
   });
@@ -48,7 +35,12 @@ Ship.prototype.draw = function() {
   this.ctx.save();
   this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
   this.ctx.rotate(this.a - (3 * Math.PI) / 2);
-  this.ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
+  this.ctx.drawImage(
+    this.img, 
+    -this.w / 2,
+    -this.h / 2,
+    this.w,
+    this.h);
   this.ctx.restore();
 };
 
@@ -98,21 +90,21 @@ Ship.prototype.move = function() {
   });
 };
 
-Ship.prototype.checkBulletCollision = function(asteroid) {
-  this.bullets = this.bullets.filter(function(bullet) {
-    return !bullet.isCollision(asteroid)
-  }.bind(this))
-}
+Ship.prototype.collideWith = function(obj) {
+  return this.x < obj.x + (obj.w - 40) &&
+    this.x + this.w > obj.x  &&
+    this.y < obj.y + (obj.h -40) &&
+    this.h + this.y > obj.y;
+};
 
-Ship.prototype.addbullets = function() { 
-  this.bullets.push(new Bullet(
-    this.ctx,
-    this.x + this.w / 2,
-    this.y + this.h / 2 - 15,
-    this.a
-  ));
+// TODO: Rename to shoot
+Ship.prototype.addbullets = function() {
+  this.bullets.push(
+    new Bullet(this.ctx, this.x + this.w / 2, this.y + this.h / 2 - 15, this.a)
+  );
   // Filter bullets
 
+  // TODO: refsctor at game clean function
   this.bullets = this.bullets.filter(
     function(bullet) {
       return (
@@ -124,6 +116,12 @@ Ship.prototype.addbullets = function() {
     }.bind(this)
   );
 };
+
+Ship.prototype.dropBullet = function(bullet) {
+  this.bullets = this.bullets.filter(function(b) {
+    return b !== bullet;
+  });
+}
 
 Ship.prototype.setListeners = function() {
   document.onkeydown = this.onKeyDown.bind(this);
@@ -146,13 +144,13 @@ Ship.prototype.onKeyDown = function(e) {
 
       break;
 
-     case KEY_SPACE:
+    case KEY_SPACE:
       if (!e.repeat) {
-         this.addbullets();
-         return false;
-       }
-       return true;
-       break;
+        this.addbullets();
+        return false;
+      }
+      return true;
+      break;
   }
 };
 Ship.prototype.onKeyUp = function(e) {
@@ -168,7 +166,6 @@ Ship.prototype.onKeyUp = function(e) {
 
       break;
     case KEY_SPACE:
-
       break;
   }
 };

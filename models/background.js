@@ -28,7 +28,7 @@ Background.prototype.draw = function() {
       this.ctx.beginPath();
       this.ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
       this.ctx.closePath();
-      this.ctx.fillStyle = "rgba(181, 181, 255, " + star.alpha + ")";
+      this.ctx.fillStyle = "rgba(0, 155, 255, " + star.alpha + ")";
       
       if (star.decreasing == true)
     {
