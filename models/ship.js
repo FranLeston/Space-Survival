@@ -10,11 +10,14 @@ function Ship(ctx) {
 
   this.img = new Image();
   this.img.src = "https://i.stack.imgur.com/rsH6n.png";
+  this.imgOn = new Image();
+  this.imgOn = "./images/thrust.png";
 
   this.w = 65;
   this.h = 70;
   this.heading = (3 * Math.PI) / 2;
   this.a = (3 * Math.PI) / 2;
+  this.r = 35
 
   this.isThrusting = false;
   this.isTurningLeft = false;
@@ -42,6 +45,18 @@ Ship.prototype.draw = function() {
     this.w,
     this.h);
   this.ctx.restore();
+
+
+
+  if (SHOW_BOUNDING) {
+    this.ctx.strokeStyle = "lime";
+    this.ctx.beginPath();
+    this.ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.r, 0, Math.PI * 2, false);
+    this.ctx.stroke();
+}
+
+
+
 };
 
 Ship.prototype.move = function() {
@@ -91,11 +106,12 @@ Ship.prototype.move = function() {
 };
 
 Ship.prototype.collideWith = function(obj) {
-  return this.x < obj.x + (obj.w - 40) &&
-    this.x + this.w > obj.x  &&
-    this.y < obj.y + (obj.h -40) &&
-    this.h + this.y > obj.y;
-};
+  return (this.x < obj.x + obj.w &&
+    this.x + this.w > obj.x &&
+    this.y < obj.y + obj.h &&
+    this.h + this.y > obj.y)
+
+  };
 
 // TODO: Rename to shoot
 Ship.prototype.addbullets = function() {

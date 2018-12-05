@@ -1,5 +1,6 @@
 function Game(canvas) {
   this.ctx = canvas.getContext("2d");
+  
 
   this.gameIntervalId = undefined;
 
@@ -7,6 +8,7 @@ function Game(canvas) {
   this.ship = new Ship(this.ctx);
   this.army = []
 
+  this.drawCount = 0;
 }
 
 Game.prototype.start = function() {
@@ -46,7 +48,7 @@ Game.prototype.checkAsteroidsCollisions = function() {
   this.ship.bullets.forEach(function(bullet) {
     this.army.forEach(function(enemy) {
       if (enemy.collideWith(bullet) && enemy.isAlive) {
-        enemy.isAlive = false;
+        enemy.boom();
         this.ship.dropBullet(bullet);
       }
     }.bind(this))
@@ -55,12 +57,14 @@ Game.prototype.checkAsteroidsCollisions = function() {
 
 
 Game.prototype.draw = function() {
+  
   this.bg.draw();
   this.ship.draw();
   this.army.forEach(function(enemy) {
     enemy.draw()
   })
-  
+ 
+  this.drawCount++;
 };
 
 Game.prototype.move = function() {
@@ -77,12 +81,18 @@ Game.prototype.checkGameOver = function() {
   }.bind(this));
 
   if (collition) {
-    alert("GAME OVER");
-    //this.stop();
+    //alert("GAME OVER");
+    this.stop();
   }
 }
 
 Game.prototype.clear = function() {
+  if (this.drawCount % 30 === 0) {
+    this.drawCount = 0;
+    this.army = this.army.filter(function (enemy) {
+      return enemy.isAlive;
+    });
+  }
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 };
 

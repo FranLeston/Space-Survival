@@ -1,0 +1,13 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    border: 0;
+    overflow: hidden; /*  Disable scrollbars */
+    display: block;  /* No floating content on sides */
+  }
+  
+  @font-face {
+    font-family: 'Spac3 halftone';
+    src: url('fonts/Spac3 halftone.ttf');
+}

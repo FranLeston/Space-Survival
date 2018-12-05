@@ -11,6 +11,7 @@ function Bullet(ctx, x, y, a) {
   this.h = 30;
 
   this.a = a;
+  this.r = 4;
 }
 
 Bullet.prototype.draw = function() {
