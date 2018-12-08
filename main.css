@@ -8,6 +8,6 @@ html, body {
   }
   
   @font-face {
-    font-family: 'Spac3 halftone';
-    src: url('fonts/Spac3 halftone.ttf');
+    font-family: 'FREEDOM';
+    src: url('./fonts/FREEDOM.ttf');
 }

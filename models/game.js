@@ -3,7 +3,7 @@ function Game(canvas) {
 
   this.gameIntervalId = undefined;
 
-  this.overlay = new Overlay(this.ctx);
+  this.overlay = new Overlay(this.ctx, this.shots);
   this.bg = new Background(this.ctx);
   this.ship = new Ship(this.ctx);
   this.army = [];
@@ -12,6 +12,9 @@ function Game(canvas) {
   this.drawCount = 0;
   this.lives = 3
   this.hits = 0;
+  this.shots=0
+  
+  
 }
 
 Game.prototype.start = function() {
@@ -65,6 +68,7 @@ Game.prototype.checkAsteroidsCollisions = function() {
 };
 
 Game.prototype.draw = function() {
+  
   var blinkOn = this.ship.blinkNum % 2 == 0;
   this.bg.draw();
   if (blinkOn) {
@@ -89,8 +93,8 @@ Game.prototype.draw = function() {
   if (this.drawCount % 1000 === 0) {
     this.addArmy(new EnemyShip(this.ctx));
   }
-
-  this.overlay.draw(this.lives, this.hits);
+ 
+  this.overlay.draw(this.lives, this.hits, this.ship.shotsFired);
 };
 
 Game.prototype.move = function() {
@@ -111,7 +115,9 @@ Game.prototype.checkGameOver = function() {
   );
 
   if (collition) {
+   this.shots = this.ship.shotsFired
     this.ship = new Ship(this.ctx);
+    this.ship.shotsFired = this.shots;
     this.lives--;
     
   }
