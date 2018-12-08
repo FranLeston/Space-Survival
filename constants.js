@@ -2,7 +2,7 @@ var FPS = 1000 / 60;
 var FRICTION = 0.05;
 var SHIP_THRUST = 0.5;
 
-var SHOW_BOUNDING = true;
+var SHOW_BOUNDING = false;
 
 
 var KEY_UP = 38;

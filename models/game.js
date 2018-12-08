@@ -39,10 +39,13 @@ Game.prototype.addArmy = function(enemy) {
 }
 
 Game.prototype.firstLevel = function() {
-  for(var i = -1; ++i < 10;) {
+  for(var i = -1; ++i < 5;) {
     this.addArmy(new Enemy(this.ctx))
   }
+  
 }
+
+
 
 Game.prototype.checkAsteroidsCollisions = function() {
   this.ship.bullets.forEach(function(bullet) {
@@ -62,9 +65,13 @@ Game.prototype.draw = function() {
   this.ship.draw();
   this.army.forEach(function(enemy) {
     enemy.draw()
+    
   })
  
   this.drawCount++;
+  if (this.drawCount % 100 === 0) {
+    this.addArmy(new Enemy(this.ctx))
+  }
 };
 
 Game.prototype.move = function() {
@@ -87,8 +94,8 @@ Game.prototype.checkGameOver = function() {
 }
 
 Game.prototype.clear = function() {
-  if (this.drawCount % 30 === 0) {
-    this.drawCount = 0;
+  if (this.drawCount % 40 === 0) {
+    
     this.army = this.army.filter(function (enemy) {
       return enemy.isAlive;
     });

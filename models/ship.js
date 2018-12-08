@@ -67,14 +67,14 @@ Ship.prototype.move = function() {
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
   } else if (this.isTurningLeft) {
-    this.a -= Math.PI / 24;
+    this.a -= Math.PI / 64;
     this.vx -= (this.vx * FRICTION) / FPS;
     this.vy -= (this.vy * FRICTION) / FPS;
 
     this.x += (this.vx * Math.cos(this.a)) / FPS;
     this.y += (this.vy * Math.sin(this.a)) / FPS;
   } else if (this.isTurningRight) {
-    this.a += Math.PI / 24;
+    this.a += Math.PI / 64;
     this.vx -= (this.vx * FRICTION) / FPS;
     this.vy -= (this.vy * FRICTION) / FPS;
 
@@ -106,9 +106,9 @@ Ship.prototype.move = function() {
 };
 
 Ship.prototype.collideWith = function(obj) {
-  return (this.x < obj.x + obj.w &&
+  return (this.x < obj.x + obj.w *.7 &&
     this.x + this.w > obj.x &&
-    this.y < obj.y + obj.h &&
+    this.y < obj.y + obj.h *.7 &&
     this.h + this.y > obj.y)
 
   };

@@ -1,7 +1,7 @@
 function Enemy(ctx) {
   this.ctx = ctx;
-  this.x = Math.floor(Math.random() * ctx.canvas.width);
-  this.y = Math.floor(Math.random() * ctx.canvas.height);
+  this.x = Math.floor(Math.random() * ctx.canvas.width) + ctx.canvas.width ;
+  this.y = Math.floor(Math.random() * ctx.canvas.height) + ctx.canvas.height;
   this.img = new Image();
   this.img.src = "./images/asteroid.png";
   this.isExploding = false;
@@ -29,7 +29,7 @@ Enemy.prototype.collideWith = function(obj) {
 };
 
 function getNonZeroRandomNumber() {
-  var random = Math.floor(Math.random() * 101) - 50;
+  var random = Math.floor(Math.random() * 101) -50;
   if (random == 0) return getNonZeroRandomNumber();
   return random;
 }
@@ -42,9 +42,12 @@ function distanceBetweenPoints(x1, y1, x2, y2) {
 */
 
 Enemy.prototype.draw = function() {
+  
   this.ctx.save();
   this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
   this.ctx.rotate(this.a);
+  
+   
   this.ctx.drawImage(
     this.img, 
     -this.w / 2, 
@@ -52,6 +55,7 @@ Enemy.prototype.draw = function() {
     this.w, 
     this.h);
   this.ctx.restore();
+  
 
   if (SHOW_BOUNDING) {
     this.ctx.strokeStyle = "red";
