@@ -1,4 +1,4 @@
-function Bullet(ctx, x, y, a) {
+function EnemyBullet(ctx, x, y, a) {
   this.ctx = ctx;
   this.x = x;
   this.y = y;
@@ -6,7 +6,7 @@ function Bullet(ctx, x, y, a) {
   this.vy = 10;
   this.img = new Image();
   this.img.src =
-    "./images/bullet.png";
+    "./images/mega-laser-1.png";
   this.w =4;
   this.h = 30;
 
@@ -14,7 +14,7 @@ function Bullet(ctx, x, y, a) {
   this.r = 4;
 }
 
-Bullet.prototype.draw = function() {
+EnemyBullet.prototype.draw = function() {
 
     this.ctx.save();
     this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
@@ -23,14 +23,14 @@ Bullet.prototype.draw = function() {
     this.ctx.restore();
 };
 
-Bullet.prototype.move = function() {
+EnemyBullet.prototype.move = function() {
    
 
     this.x += (this.vx * Math.cos(this.a))  ;
     this.y += (this.vy * Math.sin(this.a))  ;
 };
 
-Bullet.prototype.isCollision = function(obj) {
+EnemyBullet.prototype.isCollision = function(obj) {
   if(obj) {
     return (this.x < obj.x + obj.w &&
       this.x + this.w > obj.x &&

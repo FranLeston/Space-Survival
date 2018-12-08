@@ -7,14 +7,15 @@ function Enemy(ctx) {
   this.isExploding = false;
   this.isExpImg = new Image();
   this.isExpImg.src = "./images/explode.png";
-  this.vy = getNonZeroRandomNumber();
-  this.vx = getNonZeroRandomNumber();
+  this.vy = getNonZeroRandomNumber() 
+  this.vx = getNonZeroRandomNumber()
 
   this.w = Math.floor(Math.random() * 80) + 35;
   this.h = this.w;
 
   this.a = Math.floor((Math.random() * (3 * Math.PI)) / 2) - 20;
   this.r = this.w * 0.4;
+  this.destroyed = 0;
 
   this.isAlive = true;
 }
@@ -29,7 +30,7 @@ Enemy.prototype.collideWith = function(obj) {
 };
 
 function getNonZeroRandomNumber() {
-  var random = Math.floor(Math.random() * 101) -50;
+  var random = Math.floor(Math.random() * 151) -76;
   if (random == 0) return getNonZeroRandomNumber();
   return random;
 }
@@ -74,7 +75,7 @@ Enemy.prototype.draw = function() {
 
 Enemy.prototype.move = function() {
   this.a += Math.PI / 64;
-  this.x += this.vx / FPS;
+  this.x += this.vx  / FPS;
   this.y += this.vy / FPS;
 
   if (this.x < 0 - this.w) {
@@ -91,6 +92,7 @@ Enemy.prototype.move = function() {
 };
 
 Enemy.prototype.boom = function() {
+  this.destroyed++,
   this.isAlive = false;
   this.img = this.isExpImg;
 }

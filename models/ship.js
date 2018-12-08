@@ -9,15 +9,19 @@ function Ship(ctx) {
   this.vy = 0;
 
   this.img = new Image();
-  this.img.src = "https://i.stack.imgur.com/rsH6n.png";
+  this.img.src = "./images/ship.png";
   this.imgOn = new Image();
   this.imgOn = "./images/thrust.png";
+  this.isExpImg = new Image();
+  this.isExpImg.src = "./images/explode.png";
+
 
   this.w = 65;
   this.h = 70;
   this.heading = (3 * Math.PI) / 2;
   this.a = (3 * Math.PI) / 2;
   this.r = 35
+  this.explodeTime = 0 
 
   this.isThrusting = false;
   this.isTurningLeft = false;
@@ -25,15 +29,27 @@ function Ship(ctx) {
   this.setListeners();
 
   this.bullets = [];
+  this.isAlive = true
+  
+  this.shotsFired = 0;
+  this.blinkTime = Math.ceil(SHIP_BLINK_DUR * FPS)
+  this.blinkNum = SHIP_INV_DUR / SHIP_BLINK_DUR
 }
 
 Ship.prototype.draw = function() {
+  
+  
+  
+  
   this.bullets = this.bullets.filter(function(bullet) {
     return !bullet.isCollision();
   });
   this.bullets.forEach(function(bullet) {
     bullet.draw();
   });
+
+  
+
 
   this.ctx.save();
   this.ctx.translate(this.x + this.w / 2, this.y + this.h / 2);
@@ -45,7 +61,7 @@ Ship.prototype.draw = function() {
     this.w,
     this.h);
   this.ctx.restore();
-
+  
 
 
   if (SHOW_BOUNDING) {
@@ -106,9 +122,9 @@ Ship.prototype.move = function() {
 };
 
 Ship.prototype.collideWith = function(obj) {
-  return (this.x < obj.x + obj.w *.7 &&
+  return (this.x < obj.x + obj.w  &&
     this.x + this.w > obj.x &&
-    this.y < obj.y + obj.h *.7 &&
+    this.y < obj.y + obj.h  &&
     this.h + this.y > obj.y)
 
   };
@@ -117,7 +133,9 @@ Ship.prototype.collideWith = function(obj) {
 Ship.prototype.addbullets = function() {
   this.bullets.push(
     new Bullet(this.ctx, this.x + this.w / 2, this.y + this.h / 2 - 15, this.a)
+    
   );
+  console.log(this.bullets.length)
   // Filter bullets
 
   // TODO: refsctor at game clean function
@@ -163,6 +181,7 @@ Ship.prototype.onKeyDown = function(e) {
     case KEY_SPACE:
       if (!e.repeat) {
         this.addbullets();
+        this.shotsFired++;
         return false;
       }
       return true;
@@ -185,3 +204,8 @@ Ship.prototype.onKeyUp = function(e) {
       break;
   }
 };
+
+Ship.prototype.boom = function() {
+  this.isAlive = false;
+  this.img = this.isExpImg;
+}
