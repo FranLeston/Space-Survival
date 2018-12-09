@@ -33,7 +33,10 @@ this.gameStart = gamestart;
   
   this.shotsFired = 0;
   this.blinkTime = Math.ceil(SHIP_BLINK_DUR * FPS)
-  this.blinkNum = SHIP_INV_DUR / SHIP_BLINK_DUR
+  this.blinkNum = SHIP_INV_DUR / SHIP_BLINK_DUR;
+
+  this.fxLaser = new Sound("./sounds/laser-shoot.wav", 5, 0.5);
+  this.fxThrust = new Sound("./sounds/rocketthrust.wav", 5, 0.5);
 }
 
 Ship.prototype.draw = function() {
@@ -174,12 +177,15 @@ Ship.prototype.onKeyDown = function(e) {
       break;
 
     case KEY_UP:
-      this.isThrusting = true;
-
+    if (!e.repeat) {  
+    this.isThrusting = true;
+      this.fxThrust.play();
+    }
       break;
 
     case KEY_SPACE:
       if (!e.repeat) {
+        this.fxLaser.play();
         this.addbullets();
         this.shotsFired++;
         
@@ -210,3 +216,4 @@ Ship.prototype.boom = function() {
   this.isAlive = false;
   this.img = this.isExpImg;
 }
+

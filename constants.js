@@ -15,3 +15,4 @@ var SHIP_EXPLODE_DUR = 0.3;
 var SHIP_INV_DUR = 15
 var SHIP_BLINK_DUR = 0.3;
 
+var SAVE_KEY_SCORE = "highscore"

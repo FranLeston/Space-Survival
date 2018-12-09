@@ -20,6 +20,7 @@ function EnemyShip(ctx) {
 
   this.ebullets = [];
   this.drawcount = 0;
+  this.fxEnemyLaser = new Sound("./sounds/enemylaser.wav", 5, 0.5);
 }
 
 EnemyShip.prototype.collideWith = function(obj) {
@@ -97,7 +98,7 @@ EnemyShip.prototype.move = function() {
 
   if (this.drawcount % 30 === 0) {
     this.addbullets();
-    
+    this.fxEnemyLaser.play();
   }
 };
 
