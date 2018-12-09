@@ -1,7 +1,7 @@
-function Ship(ctx) {
+function Ship(ctx,gamestart) {
   // this.bullet = new Bullet();
   this.ctx = ctx;
-
+this.gameStart = gamestart;
   this.x = ctx.canvas.width / 2;
   this.y = ctx.canvas.height / 2;
 
@@ -182,6 +182,7 @@ Ship.prototype.onKeyDown = function(e) {
       if (!e.repeat) {
         this.addbullets();
         this.shotsFired++;
+        
         return false;
       }
       return true;

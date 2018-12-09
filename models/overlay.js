@@ -4,15 +4,16 @@ function Overlay(ctx) {
   
   }
 
-  Overlay.prototype.draw = function(lives, hits, shots) {
+  Overlay.prototype.draw = function(lives, hits, shots, level) {
   
-  this.ctx.font = "40px FREEDOM";
+  this.ctx.font = "30px Audiowide-Regular";
   this.ctx.fillStyle = "lime";
-  this.ctx.textAlign = "center";
-  this.ctx.fillText("Score: " + hits, this.ctx.canvas.width -200, 50);
-  this.ctx.fillText("Kill Ratio: " + (hits / shots * 100).toFixed(2) +" %", this.ctx.canvas.width -200, 100);
+  this.ctx.textAlign = "left";
+  this.ctx.fillText("Units Destroyed: " + hits, this.ctx.canvas.width -400, 50);
+  this.ctx.fillText("Kill Ratio: " + (hits / shots * 100).toFixed(2) +" %", this.ctx.canvas.width -400, 100);
   
-  this.ctx.fillText("Lives: " + lives , 100, 50);
+  this.ctx.fillText("Lives: " + lives , 25, 50);
+  this.ctx.fillText("Level: "+ level  , 25, 100);
     
     
     

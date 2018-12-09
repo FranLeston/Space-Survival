@@ -2,36 +2,58 @@ function Game(canvas) {
   this.ctx = canvas.getContext("2d");
 
   this.gameIntervalId = undefined;
-
+this.gameStart = false;
   this.overlay = new Overlay(this.ctx, this.shots);
   this.bg = new Background(this.ctx);
-  this.ship = new Ship(this.ctx);
+  this.ship = new Ship(this.ctx, this.gameStart);
   this.army = [];
   this.enemyShips = [];
-
+  
   this.drawCount = 0;
-  this.lives = 3
+  this.lives = 3;
   this.hits = 0;
-  this.shots=0
-  
-  
+  this.shots = 0;
+  this.level = 1;
+  this.levelComplete = 0;
 }
+
+
+
 
 Game.prototype.start = function() {
   if (!this.gameIntervalId) {
+    
     this.firstLevel();
     this.gameIntervalId = setInterval(
       function() {
+      
+        
+      
+        
         this.clear();
+     
+       
         this.draw();
         this.move();
 
         this.checkAsteroidsCollisions();
-
+        this.checkLevel();
         this.checkGameOver();
       }.bind(this),
       FPS
     );
+  }
+};
+
+
+
+Game.prototype.checkLevel = function() {
+  if (this.levelComplete === 20) {
+    this.level++;
+    this.levelComplete = 0;
+    for (var i = -1; ++i < this.level; ) {
+      this.addArmy(new Enemy(this.ctx));
+    }
   }
 };
 
@@ -46,7 +68,7 @@ Game.prototype.addArmy = function(enemy) {
 };
 
 Game.prototype.firstLevel = function() {
-  for (var i = -1; ++i < 7; ) {
+  for (var i = -1; ++i < 7 + this.level; ) {
     this.addArmy(new Enemy(this.ctx));
   }
 };
@@ -59,6 +81,8 @@ Game.prototype.checkAsteroidsCollisions = function() {
           if (enemy.collideWith(bullet) && enemy.isAlive) {
             enemy.boom();
             this.hits++;
+            this.levelComplete++;
+
             this.ship.dropBullet(bullet);
           }
         }.bind(this)
@@ -68,7 +92,10 @@ Game.prototype.checkAsteroidsCollisions = function() {
 };
 
 Game.prototype.draw = function() {
-  
+ 
+
+ 
+
   var blinkOn = this.ship.blinkNum % 2 == 0;
   this.bg.draw();
   if (blinkOn) {
@@ -87,14 +114,15 @@ Game.prototype.draw = function() {
   }
 
   this.drawCount++;
-  if (this.drawCount % 80 === 0) {
+  if (this.drawCount % 130 === 0) {
     this.addArmy(new Enemy(this.ctx));
   }
-  if (this.drawCount % 1000 === 0) {
+  if (this.drawCount % 800 === 0) {
     this.addArmy(new EnemyShip(this.ctx));
   }
- 
-  this.overlay.draw(this.lives, this.hits, this.ship.shotsFired);
+
+  this.overlay.draw(this.lives, this.hits, this.ship.shotsFired, this.level);
+  
 };
 
 Game.prototype.move = function() {
@@ -105,7 +133,6 @@ Game.prototype.move = function() {
 };
 
 Game.prototype.checkGameOver = function() {
-   
   var collition = this.army.some(
     function(enemy) {
       if (this.ship.blinkNum == 0) {
@@ -115,14 +142,13 @@ Game.prototype.checkGameOver = function() {
   );
 
   if (collition) {
-   this.shots = this.ship.shotsFired
+    this.shots = this.ship.shotsFired;
     this.ship = new Ship(this.ctx);
     this.ship.shotsFired = this.shots;
     this.lives--;
-    
   }
   if (this.lives === 0) {
-    alert ("GAME OVER")
+    alert("GAME OVER");
     this.stop();
   }
 };
