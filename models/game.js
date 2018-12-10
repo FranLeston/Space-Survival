@@ -46,8 +46,8 @@ Game.prototype.start = function() {
 Game.prototype.highScores = function() {
   if (this.isGameOver) {
     this.fxmusic.pause();
-    this.person = prompt("Please enter your name:", "Harry Potter");
-    localStorage.setItem(this.hits, this.person);
+    this.person = prompt("Please enter your name:", "IronHacker");
+    localStorage.setItem(this.person, this.hits);
     this.hs = new HighScores(this.ctx, sortLocalStorage());
     clearInterval(this.gameIntervalId);
     this.hsInterval = setInterval(
@@ -67,7 +67,7 @@ function sortLocalStorage() {
     var localStorageArray = new Array();
     for (i = 0; i < localStorage.length; i++) {
       localStorageArray[i] =
-        localStorage.key(i) + localStorage.getItem(localStorage.key(i));
+        localStorage.key(i) + " " + localStorage.getItem(localStorage.key(i));
     }
   }
   var sortedArray = localStorageArray.sort();
